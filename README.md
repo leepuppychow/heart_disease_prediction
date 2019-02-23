@@ -5,3 +5,6 @@ Practice with:
 * Kubernetes
 * Redis
 * Machine Learning (binary classification) in Golang
+
+Dataset from: 
+`https://www.kaggle.com/ronitf/heart-disease-uci`
