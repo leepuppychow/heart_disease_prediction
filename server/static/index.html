@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/static/styles/index.css">
+</head>
+<body>
+
+<div>
+  <h2>ENTER SOME DATA</h2>
+  <form class="column" action="/patients" method="POST">
+    <input type="number" name="age" placeholder="Patient Age">
+    <select name="gender">
+      <option value="" disabled selected>Patient Gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+    <input type="submit" value="SUBMIT">
+  </form>
+</div>
+
+</body>
+</html>
