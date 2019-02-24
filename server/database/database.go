@@ -6,6 +6,12 @@ import (
 	"github.com/gomodule/redigo/redis"
 )
 
+var RedisConn redis.Conn
+
+func init() {
+	RedisConn = Connect()
+}
+
 func Connect() redis.Conn {
 	c, err := redis.Dial("tcp", "redis:6379")
 	if err != nil {
@@ -16,14 +22,14 @@ func Connect() redis.Conn {
 	return c
 }
 
-func Exec(conn redis.Conn, command string, args ...interface{}) interface{} {
+func Exec(command string, args ...interface{}) interface{} {
 	var reply interface{}
 	var err error
 
 	if command == "HGETALL" {
-		reply, err = redis.StringMap(conn.Do(command, args...))
+		reply, err = redis.StringMap(RedisConn.Do(command, args...))
 	} else {
-		reply, err = redis.String(conn.Do(command, args...))
+		reply, err = redis.String(RedisConn.Do(command, args...))
 	}
 	if err != nil {
 		log.Println(err)
