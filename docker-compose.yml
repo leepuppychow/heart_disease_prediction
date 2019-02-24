@@ -7,3 +7,8 @@ services:
     build: "./server"
     ports:
       - "8000:8000"
+  
+  prediction:
+    build: "./prediction_service"
+    ports:
+      - "8080:8080"
