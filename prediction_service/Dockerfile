@@ -8,5 +8,3 @@ RUN go get github.com/gomodule/redigo/redis
 RUN go install github.com/leepuppychow/heart_disease_prediction/prediction_service
 
 ENTRYPOINT /go/bin/prediction_service
-
-EXPOSE 8080

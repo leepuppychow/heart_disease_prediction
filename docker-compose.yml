@@ -10,5 +10,3 @@ services:
   
   prediction:
     build: "./prediction_service"
-    ports:
-      - "8080:8080"
