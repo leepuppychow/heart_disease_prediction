@@ -5,7 +5,6 @@ ADD . /go/src/github.com/leepuppychow/heart_disease_prediction/prediction_servic
 WORKDIR /go/src/github.com/leepuppychow/heart_disease_prediction/prediction_service
 
 RUN go get github.com/gomodule/redigo/redis
-RUN go get github.com/leepuppychow/heart_disease_prediction/database
 RUN go install github.com/leepuppychow/heart_disease_prediction/prediction_service
 
 ENTRYPOINT /go/bin/prediction_service
