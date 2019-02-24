@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	db "github.com/leepuppychow/heart_disease_prediction/prediction_service/database"
+	db "github.com/leepuppychow/heart_disease_prediction/database"
 )
 
 func main() {
