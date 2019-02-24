@@ -26,5 +26,6 @@ func Exec(conn redis.Conn, command string, args ...interface{}) interface{} {
 	if err != nil {
 		log.Println(err)
 	}
+
 	return reply
 }
