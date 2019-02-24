@@ -13,6 +13,7 @@ func main() {
 	redisConn := db.Connect()
 	fmt.Println(db.Exec(redisConn, "HMSET", "hash", "name", "lee", "age", "30"))
 	fmt.Println(db.Exec(redisConn, "HGETALL", "hash"))
+	fmt.Println(db.Exec(redisConn, "HGET", "hash", "age"))
 
 	http.HandleFunc("/", h.IndexHandler)
 	http.HandleFunc("/patients", h.NewPatientHandler)
