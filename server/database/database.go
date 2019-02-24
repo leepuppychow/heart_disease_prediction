@@ -14,8 +14,15 @@ func Connect() redis.Conn {
 	return c
 }
 
-func Exec(conn redis.Conn, command string, args ...interface{}) string {
-	reply, err := redis.String(conn.Do(command, args...))
+func Exec(conn redis.Conn, command string, args ...interface{}) interface{} {
+	var reply interface{}
+	var err error
+
+	if command == "HGETALL" {
+		reply, err = redis.StringMap(conn.Do(command, args...))
+	} else {
+		reply, err = redis.String(conn.Do(command, args...))
+	}
 	if err != nil {
 		log.Println(err)
 	}

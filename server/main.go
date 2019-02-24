@@ -11,8 +11,8 @@ import (
 
 func main() {
 	redisConn := db.Connect()
-	fmt.Println(db.Exec(redisConn, "SET", "whaa", "chow"))
-	fmt.Println(db.Exec(redisConn, "GET", "whaa"))
+	fmt.Println(db.Exec(redisConn, "HMSET", "hash", "name", "lee", "age", "30"))
+	fmt.Println(db.Exec(redisConn, "HGETALL", "hash"))
 
 	http.HandleFunc("/", h.IndexHandler)
 	http.HandleFunc("/patients", h.NewPatientHandler)
