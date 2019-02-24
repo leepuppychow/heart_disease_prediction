@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	fmt.Println("HELLO")
 	redisConn := db.Connect()
 	fmt.Println(db.Exec(redisConn, "HMSET", "hash", "name", "lee", "age", "30"))
 	fmt.Println(db.Exec(redisConn, "HGETALL", "hash"))
