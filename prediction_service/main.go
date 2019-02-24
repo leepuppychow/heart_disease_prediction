@@ -9,7 +9,7 @@ import (
 func main() {
 	fmt.Println("HELLO THERE, WHERE IS MY DATA???")
 
-	for i := 0; i < 20; i++ {
+	for i := 0; i < 5; i++ {
 		fmt.Println(db.Exec("HGET", "hash", "name"))
 	}
 }
