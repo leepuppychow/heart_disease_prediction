@@ -4,10 +4,12 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/leepuppychow/heart_disease_prediction/server/csv_loader"
 	h "github.com/leepuppychow/heart_disease_prediction/server/handler"
 )
 
 func main() {
+	csv_loader.CsvToRedis()
 	http.HandleFunc("/", h.IndexHandler)
 	http.HandleFunc("/patients", h.NewPatientHandler)
 	port := ":8000"

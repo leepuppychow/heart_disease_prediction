@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -20,9 +19,8 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 	age := r.FormValue("age")
 	gender := r.FormValue("gender")
-
-	fmt.Println(db.Exec("HMSET", "hash2", "name", "test", "age", age, "gender", gender))
-	fmt.Println(db.Exec("HGETALL", "hash2"))
-
+	cp := r.FormValue("cp")
+	row := age + "," + gender + "," + cp
+	db.AddRow(row)
 	http.Redirect(w, r, "/", http.StatusFound)
 }
