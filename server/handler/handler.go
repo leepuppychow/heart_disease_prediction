@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	db "github.com/leepuppychow/heart_disease_prediction/database"
+	db "github.com/leepuppychow/heart_disease_prediction/server/database"
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {

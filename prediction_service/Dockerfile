@@ -1,7 +1,6 @@
 FROM golang
 
 ADD . /go/src/github.com/leepuppychow/heart_disease_prediction/prediction_service
-
 WORKDIR /go/src/github.com/leepuppychow/heart_disease_prediction/prediction_service
 
 RUN go get github.com/gomodule/redigo/redis
