@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -22,10 +21,6 @@ func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 	gender := r.FormValue("gender")
 	cp := r.FormValue("cp")
 	row := age + "," + gender + "," + cp
-
 	db.AddRow(row)
-	fmt.Println(db.GetAllRows())
-	fmt.Println(db.DataCount())
-
 	http.Redirect(w, r, "/", http.StatusFound)
 }
