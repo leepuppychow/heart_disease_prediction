@@ -19,20 +19,39 @@ func Connect() redis.Conn {
 	return c
 }
 
-func Exec(command string, args ...interface{}) interface{} {
-	var reply interface{}
-	var err error
+// Try saving each row same as CSV format in Redis
+// Do the data parsing in Go
+
+func AddRow(row string) {
 	c := Connect()
 	defer c.Close()
 
-	if command == "HGETALL" {
-		reply, err = redis.StringMap(c.Do(command, args...))
-	} else {
-		reply, err = redis.String(c.Do(command, args...))
-	}
+	reply, err := c.Do("LPUSH", "dataList", row)
 	if err != nil {
-		log.Println(err)
+		log.Println("Error adding row to dataList", err)
 	}
+	log.Println("Successfully added row", reply)
+}
 
+func GetAllRows() []string {
+	c := Connect()
+	defer c.Close()
+	reply, err := redis.Strings(c.Do("LRANGE", "dataList", "0", "-1"))
+	if err != nil {
+		log.Println("Error getting all data", err)
+	}
+	log.Println("Successfully got all data")
+
+	return reply
+}
+
+func DataCount() int64 {
+	c := Connect()
+	defer c.Close()
+
+	reply, err := redis.Int64(c.Do("LLEN", "dataList"))
+	if err != nil {
+		log.Println("Error getting dataList length", err)
+	}
 	return reply
 }

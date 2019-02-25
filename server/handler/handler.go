@@ -20,9 +20,12 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 	age := r.FormValue("age")
 	gender := r.FormValue("gender")
+	cp := r.FormValue("cp")
+	row := age + "," + gender + "," + cp
 
-	fmt.Println(db.Exec("HMSET", "hash2", "name", "test", "age", age, "gender", gender))
-	fmt.Println(db.Exec("HGETALL", "hash2"))
+	db.AddRow(row)
+	fmt.Println(db.GetAllRows())
+	fmt.Println(db.DataCount())
 
 	http.Redirect(w, r, "/", http.StatusFound)
 }
