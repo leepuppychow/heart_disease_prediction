@@ -55,3 +55,15 @@ func DataCount() int64 {
 	}
 	return reply
 }
+
+func DeleteList() string {
+	c := Connect()
+	defer c.Close()
+	reply, err := redis.String(c.Do("DEL", "dataList"))
+	if err != nil {
+		log.Println("Error deleting all data", err)
+	}
+	log.Println("Successfully deleted all data")
+
+	return reply
+}

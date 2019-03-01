@@ -10,9 +10,12 @@ import (
 
 func main() {
 	csv_loader.CsvToRedis()
+	startServer(":8000")
+}
+
+func startServer(port string) {
 	http.HandleFunc("/", h.IndexHandler)
 	http.HandleFunc("/patients", h.NewPatientHandler)
-	port := ":8000"
 	log.Println("Server running on port", port)
 	log.Fatal(http.ListenAndServe(port, nil))
 }
