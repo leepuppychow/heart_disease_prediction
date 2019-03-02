@@ -1,19 +1,13 @@
 package handlers
 
 import (
-	"html/template"
-	"log"
 	"net/http"
 
 	db "github.com/leepuppychow/heart_disease_prediction/server/database"
 )
 
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("./static/index.html")
-	if err != nil {
-		log.Fatal(err)
-	}
-	t.Execute(w, "")
+func IndexHandler() http.Handler {
+	return http.FileServer(http.Dir("static"))
 }
 
 func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
