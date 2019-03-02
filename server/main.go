@@ -14,7 +14,7 @@ func main() {
 }
 
 func startServer(port string) {
-	http.HandleFunc("/", h.IndexHandler)
+	http.Handle("/", h.IndexHandler())
 	http.HandleFunc("/patients", h.NewPatientHandler)
 	log.Println("Server running on port", port)
 	log.Fatal(http.ListenAndServe(port, nil))
