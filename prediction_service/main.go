@@ -1,11 +1,19 @@
 package main
 
 import (
-	"fmt"
+	"log"
+	"net/http"
 
-	db "github.com/leepuppychow/heart_disease_prediction/prediction_service/database"
+	h "github.com/leepuppychow/heart_disease_prediction/prediction_service/handlers"
 )
 
 func main() {
-	fmt.Println("HELLO THERE, WHERE IS MY DATA???")
+	startPredictionService(":8080")
+}
+
+func startPredictionService(port string) {
+	http.HandleFunc("/train", h.TrainHandler)
+	http.HandleFunc("/predict", h.PredictHandler)
+	log.Println("Prediction service running on port", port)
+	log.Fatal(http.ListenAndServe(port, nil))
 }

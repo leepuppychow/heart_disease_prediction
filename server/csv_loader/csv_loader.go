@@ -9,9 +9,11 @@ import (
 	"strings"
 
 	db "github.com/leepuppychow/heart_disease_prediction/server/database"
+	"github.com/leepuppychow/heart_disease_prediction/server/messages"
 )
 
 func CsvToRedis() {
+	db.DeleteList() // clear out Redis DB when server first starts
 	csvFile, err := os.Open("./data/heart.csv")
 	if err != nil {
 		log.Println("Error loading CSV file", err)
@@ -26,4 +28,6 @@ func CsvToRedis() {
 		}
 		db.AddRow(strings.Join(line, ","))
 	}
+
+	messages.SendTo("prediction", "8080", "train")
 }

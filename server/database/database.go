@@ -7,23 +7,25 @@ import (
 	"github.com/gomodule/redigo/redis"
 )
 
-func Connect() redis.Conn {
+func Connect(attempts int) redis.Conn {
 	c, err := redis.Dial("tcp", "redis:6379")
-	if err != nil {
-		log.Println("Error connecting to Redis, trying again...", err)
-		time.Sleep(200 * time.Millisecond)
-		return Connect()
-	} else {
-		log.Println("Connected to Redis successfully")
+	for i := 1; i < attempts; i++ {
+		if err == nil {
+			return c
+		} else {
+			time.Sleep(200 * time.Millisecond)
+			c, err = redis.Dial("tcp", "redis:6379")
+		}
 	}
-	return c
+	log.Fatal("Unable to connect to Redis", err)
+	return nil
 }
 
 // Try saving each row same as CSV format in Redis
 // Do the data parsing in Go
 
 func AddRow(row string) {
-	c := Connect()
+	c := Connect(5)
 	defer c.Close()
 
 	reply, err := c.Do("LPUSH", "dataList", row)
@@ -34,7 +36,7 @@ func AddRow(row string) {
 }
 
 func GetAllRows() []string {
-	c := Connect()
+	c := Connect(5)
 	defer c.Close()
 	reply, err := redis.Strings(c.Do("LRANGE", "dataList", "0", "-1"))
 	if err != nil {
@@ -46,7 +48,7 @@ func GetAllRows() []string {
 }
 
 func DataCount() int64 {
-	c := Connect()
+	c := Connect(5)
 	defer c.Close()
 
 	reply, err := redis.Int64(c.Do("LLEN", "dataList"))
@@ -57,7 +59,7 @@ func DataCount() int64 {
 }
 
 func DeleteList() string {
-	c := Connect()
+	c := Connect(5)
 	defer c.Close()
 	reply, err := redis.String(c.Do("DEL", "dataList"))
 	if err != nil {
