@@ -14,6 +14,11 @@ func SendTo(domain, port, msg string) (bool, error) {
 	}
 
 	url := fmt.Sprintf("http://%s:%s/%s", domain, port, msg)
-	http.Get(url)
+	_, err := http.Get(url)
+
+	if err != nil {
+		log.Println("Error sending message to prediction service", err)
+		return false, err
+	}
 	return true, nil
 }
