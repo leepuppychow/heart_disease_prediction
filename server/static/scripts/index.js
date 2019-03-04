@@ -7,7 +7,7 @@ heartDiseaseSelect.addEventListener('change', selectHeartDiseaseStatus);
 
 // Event Handlers
 function selectHeartDiseaseStatus(event) {
-  if (event.target.value !== 'unknown') {
+  if (event.target.value) {
     submitButton.value = "ENTER NEW DATA POINT"
   } else {
     submitButton.value = "MAKE PREDICTION"
