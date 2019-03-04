@@ -2,7 +2,6 @@
 
 Practice with:
 * Docker
-* Kubernetes
 * Redis
 * Machine Learning (binary classification) in Golang
 
