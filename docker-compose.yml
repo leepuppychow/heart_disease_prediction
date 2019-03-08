@@ -9,6 +9,11 @@ services:
       - "8000:8000"
   
   prediction:
-    build: "./prediction_service"
+    build: "./prediction"
     ports:
       - "8080:8080"
+
+  visualization:
+    build: "./visualization"
+    ports:
+      - "8888:8888"
