@@ -21,9 +21,9 @@ func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 		trestbps := r.FormValue("trestbps")
 		chol := r.FormValue("chol")
 		fbs := r.FormValue("fbs")
-	
+
 		hasHeartDisease := r.FormValue("hasHeartDisease")
-	
+
 		if hasHeartDisease == "" {
 			messages.SendTo("prediction", "8080", "predict")
 		} else {
