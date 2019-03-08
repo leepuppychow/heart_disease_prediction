@@ -9,15 +9,15 @@
 <div>
   <h2>Enter patient data:</h2>
   <form class="column" action="/patients" method="POST">
-    <input type="number" name="age" placeholder="Patient Age" required>
+    <input type="number" name="age" placeholder="Patient Age" required autocomplete="off">
     <select name="sex" required>
       <option value="" disabled selected>Gender</option>
       <option value="1">Male</option>
       <option value="0">Female</option>
     </select>
-    <input type="number" name="cp" min=0 max=3 placeholder="Chest Pain Type (0-3)" required>
-    <input type="number" name="trestbps" placeholder="Resting blood pressure" required>
-    <input type="number" name="chol" placeholder="Serum cholesterol" required>
+    <input type="number" name="cp" min=0 max=3 placeholder="Chest Pain Type (0-3)" required autocomplete="off">
+    <input type="number" name="trestbps" placeholder="Resting blood pressure" required autocomplete="off">
+    <input type="number" name="chol" placeholder="Serum cholesterol" required autocomplete="off">
     <label for="blood-sugar">Fasting blood sugar > 120 mg/dl?</label>
     <select id="blood-sugar" name="fbs" required>
       <option value="1">Yes</option>

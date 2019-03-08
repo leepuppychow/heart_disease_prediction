@@ -24,21 +24,21 @@ func Connect(attempts int) redis.Conn {
 // Try saving each row same as CSV format in Redis
 // Do the data parsing in Go
 
-func AddRow(row string) {
+func AddRow(list, row string) {
 	c := Connect(5)
 	defer c.Close()
 
-	reply, err := c.Do("LPUSH", "dataList", row)
+	reply, err := c.Do("LPUSH", list, row)
 	if err != nil {
-		log.Println("Error adding row to dataList", err)
+		log.Println("Error adding row", list, err)
 	}
 	log.Println("Successfully added row", reply)
 }
 
-func GetAllRows() []string {
+func GetAllRows(list string) []string {
 	c := Connect(5)
 	defer c.Close()
-	reply, err := redis.Strings(c.Do("LRANGE", "dataList", "0", "-1"))
+	reply, err := redis.Strings(c.Do("LRANGE", list, "0", "-1"))
 	if err != nil {
 		log.Println("Error getting all data", err)
 	}
@@ -47,21 +47,21 @@ func GetAllRows() []string {
 	return reply
 }
 
-func DataCount() int64 {
+func DataCount(list string) int64 {
 	c := Connect(5)
 	defer c.Close()
 
-	reply, err := redis.Int64(c.Do("LLEN", "dataList"))
+	reply, err := redis.Int64(c.Do("LLEN", list))
 	if err != nil {
-		log.Println("Error getting dataList length", err)
+		log.Println("Error getting count of", list, err)
 	}
 	return reply
 }
 
-func DeleteList() string {
+func DeleteList(list string) string {
 	c := Connect(5)
 	defer c.Close()
-	reply, err := redis.String(c.Do("DEL", "dataList"))
+	reply, err := redis.String(c.Do("DEL", list))
 	if err != nil {
 		log.Println("Error deleting all data", err)
 	}

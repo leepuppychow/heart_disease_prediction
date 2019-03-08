@@ -21,10 +21,10 @@ func Connect(attempts int) redis.Conn {
 	return nil
 }
 
-func GetAllRows() []string {
+func GetAllRows(list string) []string {
 	c := Connect(5)
 	defer c.Close()
-	reply, err := redis.Strings(c.Do("LRANGE", "dataList", "0", "-1"))
+	reply, err := redis.Strings(c.Do("LRANGE", list, "0", "-1"))
 	if err != nil {
 		log.Println("Error getting all data", err)
 	}

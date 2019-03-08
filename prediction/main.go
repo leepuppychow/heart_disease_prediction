@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	h "github.com/leepuppychow/heart_disease_prediction/prediction_service/handlers"
+	h "github.com/leepuppychow/heart_disease_prediction/prediction/handlers"
 )
 
 func main() {

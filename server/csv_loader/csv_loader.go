@@ -13,7 +13,7 @@ import (
 )
 
 func CsvToRedis() {
-	db.DeleteList() // clear out Redis DB when server first starts
+	db.DeleteList("dataList") // clear out Redis DB when server first starts
 	csvFile, err := os.Open("./data/heart.csv")
 	if err != nil {
 		log.Println("Error loading CSV file", err)
@@ -26,7 +26,7 @@ func CsvToRedis() {
 		} else if err != nil {
 			log.Println("Error reading CSV line", err)
 		}
-		db.AddRow(strings.Join(line, ","))
+		db.AddRow("dataList", strings.Join(line, ","))
 	}
 
 	messages.SendTo("prediction", "8080", "train")
