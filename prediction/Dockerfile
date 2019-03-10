@@ -1,11 +1,11 @@
-FROM golang
+FROM python:3.6-slim
 
-ADD . /go/src/github.com/leepuppychow/heart_disease_prediction/prediction
-WORKDIR /go/src/github.com/leepuppychow/heart_disease_prediction/prediction
+WORKDIR /app
 
-RUN go get github.com/gomodule/redigo/redis
-RUN go install github.com/leepuppychow/heart_disease_prediction/prediction
+COPY . /app
 
-ENTRYPOINT /go/bin/prediction
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 EXPOSE 8080
+
+CMD ["python", "app.py"]
