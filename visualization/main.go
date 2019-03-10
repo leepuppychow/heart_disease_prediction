@@ -9,8 +9,6 @@ import (
 
 func main() {
 	startVisualizationService(":8888")
-
-	// test
 }
 
 func startVisualizationService(port string) {
