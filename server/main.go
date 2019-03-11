@@ -4,12 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/leepuppychow/heart_disease_prediction/server/csv_loader"
 	h "github.com/leepuppychow/heart_disease_prediction/server/handlers"
 )
 
 func main() {
-	csv_loader.CsvToRedis()
 	startServer(":8000")
 }
 
