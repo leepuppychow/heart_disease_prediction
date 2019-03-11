@@ -6,7 +6,7 @@ from sklearn.linear_model import LogisticRegression
 # joblib is for model persistence so it doesn't have to train model at every request
 from sklearn.externals import joblib
 
-def logistic():
+def train():
   # EXAMPLE FROM MY FALL RISK API
 
   # df = pd.read_csv('fall_risk.csv')
@@ -38,3 +38,19 @@ def logistic():
   # # Pickle the model, do you don't train everytime API is called
   # joblib.dump(data, "logistic_regression_data.pkl")
   return ""
+
+def predict(age, berg, gait):
+    data = joblib.load("./logistic_regression_data.pkl")
+
+    age_scaled = ((age - data["age_min"]) / data["age_range"]).item()
+    berg_scaled = ((berg - data["berg_min"]) / data["berg_range"]).item()
+    gait_scaled = ((gait - data["gait_min"]) / data["gait_range"]).item()
+
+    prediction = data["model"].predict([[age_scaled, berg_scaled, gait_scaled]])
+
+    if prediction == 0:
+      return {"fall_risk": "LOW",
+        "model_accuracy": data["score"]}
+    else:
+      return {"fall_risk": "HIGH",
+        "model_accuracy": data["score"]}

@@ -7,15 +7,11 @@ CORS(app)
 
 @app.route("/train")
 def train():
-  response = "HELLO TRAIN HANDLER - PYTHON"
-  print(response)
-  return response
+  return "HELLO TRAIN HANDLER - PYTHON"
 
 @app.route("/predict")
 def predict():
-  response = "HELLO PREDICT HANDLER - PYTHON"
-  print(response)
-  return response
+  return "HELLO PREDICT HANDLER - PYTHON"
 
 if __name__ == "__main__":
   app.run(host="0.0.0.0", port=8080)
