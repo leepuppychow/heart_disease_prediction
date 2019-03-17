@@ -7,7 +7,13 @@
 <body>
 
 <div class="row-container">
+  
   <section>
+    <h2>Load CSV file:</h2>
+    <form class="column" action="/csv-load-form" method="post" enctype="multipart/form-data">
+      <input id="csvFile" type="file" name="csvFile">
+      <input type="submit" value="Upload File" />
+    </form>
     <h2>Enter patient data:</h2>
     <form class="column" action="/patients" method="POST">
       <input type="number" name="age" placeholder="Patient Age" required autocomplete="off">
