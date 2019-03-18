@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	c "github.com/leepuppychow/heart_disease_prediction/server/csv_helpers"
 )
 
 func SendTo(domain, port, msg string) (bool, error) {
@@ -21,4 +23,18 @@ func SendTo(domain, port, msg string) (bool, error) {
 		return false, err
 	}
 	return true, nil
+}
+
+func Predict(url string) {
+	res, err := http.Get(url)
+	if err != nil {
+		log.Println(err)
+	} else {
+		log.Println("Successful request to Predict service", res)
+	}
+}
+
+func Train(url, file string) {
+	contents := c.GetCSVContents(file)
+	log.Println(contents)
 }

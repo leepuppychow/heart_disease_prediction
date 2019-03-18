@@ -1,16 +1,14 @@
 package handlers
 
 import (
-	"encoding/csv"
-	"io"
 	"log"
 	"net/http"
-	"os"
-	"path/filepath"
 
 	c "github.com/leepuppychow/heart_disease_prediction/server/csv_helpers"
 	"github.com/leepuppychow/heart_disease_prediction/server/messages"
 )
+
+var RowsAdded int
 
 func IndexHandler() http.Handler {
 	return http.FileServer(http.Dir("static"))
@@ -18,54 +16,49 @@ func IndexHandler() http.Handler {
 
 func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		csvFile := c.OpenCSV("./data/heart.csv")
-		defer csvFile.Close()
-
-		writer := csv.NewWriter(csvFile)
-		defer writer.Flush()
-
+		hasHeartDisease := r.FormValue("hasHeartDisease")
 		age := r.FormValue("age")
 		sex := r.FormValue("sex")
 		cp := r.FormValue("cp")
 		trestbps := r.FormValue("trestbps")
 		chol := r.FormValue("chol")
 		fbs := r.FormValue("fbs")
-		hasHeartDisease := r.FormValue("hasHeartDisease")
+		row := []string{age, sex, cp, trestbps, chol, fbs, hasHeartDisease}
 
 		if hasHeartDisease == "" {
-			messages.SendTo("prediction", "8080", "predict")
+			MakePrediction(row)
 		} else {
-			row := []string{age, sex, cp, trestbps, chol, fbs, hasHeartDisease}
-			err := writer.Write(row)
-			if err != nil {
-				log.Println(err)
-			}
-			log.Println("Row Added:", row)
-			messages.SendTo("prediction", "8080", "train")
+			SaveNewDataPoint(row)
 		}
-		http.Redirect(w, r, "/", http.StatusFound)
 	}
+	http.Redirect(w, r, "/", http.StatusFound)
+}
+
+func SaveNewDataPoint(row []string) {
+	file := "./data/heart.csv"
+	err := c.AppendToCSV(file, row)
+	if err == nil {
+		RowsAdded++
+	}
+	if RowsAdded > 1 {
+		messages.Train("http://prediction:8080", file)
+	}
+}
+
+func MakePrediction(row []string) {
+	messages.Predict("http://prediction:8080")
 }
 
 func CSVLoadForm(w http.ResponseWriter, r *http.Request) {
 	// Saves CSV file to the data directory
 	file, header, err := r.FormFile("csvFile")
 	if err != nil {
-		log.Println(err)
+		log.Println("Error getting CSV file from form", err)
 	}
 	defer file.Close()
-
-	out, err := os.Create(filepath.Join("./data", header.Filename))
-	if err != nil {
-		log.Println("Unable to create the file for writing")
+	err = c.SaveCSV(file, header.Filename)
+	if err == nil {
+		log.Println("File loaded successfully", header.Filename)
 	}
-	defer out.Close()
-
-	_, err = io.Copy(out, file)
-	if err != nil {
-		log.Println("Unable to copy contents to the file")
-	}
-
-	log.Println("File loaded successfully", header.Filename)
 	http.Redirect(w, r, "/", http.StatusFound)
 }
