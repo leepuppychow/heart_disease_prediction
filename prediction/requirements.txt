@@ -1,3 +1,7 @@
 Flask
-Redis
 Flask-Cors
+numpy
+pandas
+scikit-learn
+scipy
+sklearn

@@ -34,19 +34,25 @@ func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
+func MakePrediction(row []string) {
+	err := messages.Predict(row)
+	if err == nil {
+		log.Println("Successful POST /predict (prediction service)")
+	}
+}
+
 func SaveNewDataPoint(row []string) {
 	file := "./data/heart.csv"
 	err := c.AppendToCSV(file, row)
 	if err == nil {
 		RowsAdded++
 	}
-	if RowsAdded > 1 {
-		messages.Train("http://prediction:8080", file)
+	if RowsAdded > 0 {
+		err = messages.Train(file)
+		if err == nil {
+			log.Println("Successful POST /train (prediction service)")
+		}
 	}
-}
-
-func MakePrediction(row []string) {
-	messages.Predict("http://prediction:8080")
 }
 
 func CSVLoadForm(w http.ResponseWriter, r *http.Request) {
