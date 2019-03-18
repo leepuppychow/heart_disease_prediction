@@ -6,6 +6,7 @@ import (
 
 	c "github.com/leepuppychow/heart_disease_prediction/server/csv_helpers"
 	"github.com/leepuppychow/heart_disease_prediction/server/messages"
+	"github.com/leepuppychow/heart_disease_prediction/server/models"
 )
 
 var RowsAdded int
@@ -16,16 +17,18 @@ func IndexHandler() http.Handler {
 
 func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		hasHeartDisease := r.FormValue("hasHeartDisease")
-		age := r.FormValue("age")
-		sex := r.FormValue("sex")
-		cp := r.FormValue("cp")
-		trestbps := r.FormValue("trestbps")
-		chol := r.FormValue("chol")
-		fbs := r.FormValue("fbs")
-		row := []string{age, sex, cp, trestbps, chol, fbs, hasHeartDisease}
-
-		if hasHeartDisease == "" {
+		p := models.HeartDiseasePatient{
+			Age:                   r.FormValue("age"),
+			Sex:                   r.FormValue("sex"),
+			ChestPainType:         r.FormValue("cp"),
+			RestingBloodPress:     r.FormValue("trestbps"),
+			SerumCholesterol:      r.FormValue("chol"),
+			FastingBP:             r.FormValue("fbs"),
+			ExerciseInducedAngina: r.FormValue("angina"),
+			HasHeartDisease:       r.FormValue("hasHeartDisease"),
+		}
+		row := p.DataRow()
+		if p.HasHeartDisease == "" {
 			MakePrediction(row)
 		} else {
 			SaveNewDataPoint(row)
