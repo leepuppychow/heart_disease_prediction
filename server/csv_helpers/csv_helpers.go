@@ -9,17 +9,12 @@ import (
 	"path/filepath"
 )
 
-func GetCSVContents(file string) [][]string {
+func OpenCSV(file string) io.Reader {
 	csvFile, err := os.Open(file)
 	if err != nil {
 		log.Println("Error opening CSV file", err)
 	}
-	r := csv.NewReader(csvFile)
-	records, err := r.ReadAll()
-	if err != nil {
-		log.Println("Error reading CSV contents", err)
-	}
-	return records
+	return csvFile
 }
 
 func AppendToCSV(file string, row []string) error {

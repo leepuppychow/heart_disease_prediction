@@ -1,40 +1,30 @@
 package messages
 
 import (
-	"errors"
-	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	c "github.com/leepuppychow/heart_disease_prediction/server/csv_helpers"
 )
 
-func SendTo(domain, port, msg string) (bool, error) {
-	if msg == "" || domain == "" || port == "" {
-		log.Printf("Missing information for sending message")
-		return false, errors.New("Missing information (either domain, port, or message)")
-	}
-
-	url := fmt.Sprintf("http://%s:%s/%s", domain, port, msg)
-	_, err := http.Get(url)
-
-	if err != nil {
-		log.Println("Error sending message to prediction service", err)
-		return false, err
-	}
-	return true, nil
-}
-
-func Predict(url string) {
-	res, err := http.Get(url)
+func Predict(row []string) error {
+	url := "http://prediction:8080/predict"
+	rowString := strings.Join(row, ",")
+	_, err := http.Post(url, "text/csv", strings.NewReader(rowString))
 	if err != nil {
 		log.Println(err)
-	} else {
-		log.Println("Successful request to Predict service", res)
 	}
+	return err
 }
 
-func Train(url, file string) {
-	contents := c.GetCSVContents(file)
-	log.Println(contents)
+func Train(file string) error {
+	url := "http://prediction:8080/train"
+	contents := c.OpenCSV(file)
+	client := &http.Client{}
+	_, err := client.Post(url, "text/csv", contents)
+	if err != nil {
+		log.Println("Error sending CSV to prediction", err)
+	}
+	return err
 }
