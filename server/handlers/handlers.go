@@ -8,7 +8,6 @@ import (
 	"os"
 	"path/filepath"
 
-	c "github.com/leepuppychow/heart_disease_prediction/server/csv_helpers"
 	"github.com/leepuppychow/heart_disease_prediction/server/messages"
 )
 
@@ -18,33 +17,48 @@ func IndexHandler() http.Handler {
 
 func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		csvFile := c.OpenCSV("./data/heart.csv")
-		defer csvFile.Close()
-
-		writer := csv.NewWriter(csvFile)
-		defer writer.Flush()
-
+		hasHeartDisease := r.FormValue("hasHeartDisease")
 		age := r.FormValue("age")
 		sex := r.FormValue("sex")
 		cp := r.FormValue("cp")
 		trestbps := r.FormValue("trestbps")
 		chol := r.FormValue("chol")
 		fbs := r.FormValue("fbs")
-		hasHeartDisease := r.FormValue("hasHeartDisease")
+		row := []string{age, sex, cp, trestbps, chol, fbs, hasHeartDisease}
 
 		if hasHeartDisease == "" {
-			messages.SendTo("prediction", "8080", "predict")
+			MakePrediction(row)
 		} else {
-			row := []string{age, sex, cp, trestbps, chol, fbs, hasHeartDisease}
-			err := writer.Write(row)
-			if err != nil {
-				log.Println(err)
-			}
-			log.Println("Row Added:", row)
-			messages.SendTo("prediction", "8080", "train")
+			SaveNewDataPoint(row)
 		}
-		http.Redirect(w, r, "/", http.StatusFound)
 	}
+	http.Redirect(w, r, "/", http.StatusFound)
+}
+
+func SaveNewDataPoint(row []string) {
+	file := "./data/heart.csv"
+	csvFile, err := os.OpenFile(file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Println(err)
+	}
+	defer csvFile.Close()
+	log.Println("File opened successfully")
+
+	writer := csv.NewWriter(csvFile)
+	defer writer.Flush()
+
+	err := writer.Write(row)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println("Row Added:", row)
+
+	// If row added count exceeds some threshold then:
+	messages.Train("http://prediction:8080", file)
+}
+
+func MakePrediction(row []string) {
+	messages.Predict("http://prediction:8080")
 }
 
 func CSVLoadForm(w http.ResponseWriter, r *http.Request) {
