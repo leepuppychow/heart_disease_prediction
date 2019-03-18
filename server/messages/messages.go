@@ -1,12 +1,12 @@
 package messages
 
 import (
-	"encoding/csv"
 	"errors"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
+
+	c "github.com/leepuppychow/heart_disease_prediction/server/csv_helpers"
 )
 
 func SendTo(domain, port, msg string) (bool, error) {
@@ -26,25 +26,15 @@ func SendTo(domain, port, msg string) (bool, error) {
 }
 
 func Predict(url string) {
-	csvFile, err := os.Open(file)
-	r := csv.NewReader(csvFile)
-
-	records, err := r.ReadAll()
+	res, err := http.Get(url)
 	if err != nil {
-		log.Fatal("PREDICT ERROR", err)
+		log.Println(err)
+	} else {
+		log.Println("Successful request to Predict service", res)
 	}
-
-	log.Println(records)
 }
 
 func Train(url, file string) {
-	csvFile, err := os.Open(file)
-	r := csv.NewReader(csvFile)
-
-	records, err := r.ReadAll()
-	if err != nil {
-		log.Fatal("TRAIN ERROR", err)
-	}
-
-	log.Println(records)
+	contents := c.GetCSVContents(file)
+	log.Println(contents)
 }

@@ -1,15 +1,14 @@
 package handlers
 
 import (
-	"encoding/csv"
-	"io"
 	"log"
 	"net/http"
-	"os"
-	"path/filepath"
 
+	c "github.com/leepuppychow/heart_disease_prediction/server/csv_helpers"
 	"github.com/leepuppychow/heart_disease_prediction/server/messages"
 )
+
+var RowsAdded int
 
 func IndexHandler() http.Handler {
 	return http.FileServer(http.Dir("static"))
@@ -37,24 +36,13 @@ func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 
 func SaveNewDataPoint(row []string) {
 	file := "./data/heart.csv"
-	csvFile, err := os.OpenFile(file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		log.Println(err)
+	err := c.AppendToCSV(file, row)
+	if err == nil {
+		RowsAdded++
 	}
-	defer csvFile.Close()
-	log.Println("File opened successfully")
-
-	writer := csv.NewWriter(csvFile)
-	defer writer.Flush()
-
-	err := writer.Write(row)
-	if err != nil {
-		log.Println(err)
+	if RowsAdded > 1 {
+		messages.Train("http://prediction:8080", file)
 	}
-	log.Println("Row Added:", row)
-
-	// If row added count exceeds some threshold then:
-	messages.Train("http://prediction:8080", file)
 }
 
 func MakePrediction(row []string) {
@@ -65,21 +53,12 @@ func CSVLoadForm(w http.ResponseWriter, r *http.Request) {
 	// Saves CSV file to the data directory
 	file, header, err := r.FormFile("csvFile")
 	if err != nil {
-		log.Println(err)
+		log.Println("Error getting CSV file from form", err)
 	}
 	defer file.Close()
-
-	out, err := os.Create(filepath.Join("./data", header.Filename))
-	if err != nil {
-		log.Println("Unable to create the file for writing")
+	err = c.SaveCSV(file, header.Filename)
+	if err == nil {
+		log.Println("File loaded successfully", header.Filename)
 	}
-	defer out.Close()
-
-	_, err = io.Copy(out, file)
-	if err != nil {
-		log.Println("Unable to copy contents to the file")
-	}
-
-	log.Println("File loaded successfully", header.Filename)
 	http.Redirect(w, r, "/", http.StatusFound)
 }
