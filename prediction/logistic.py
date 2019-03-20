@@ -13,6 +13,8 @@ def make_prediction(data):
 
 def train_model(data):
   df = pd.read_csv(data, sep=",")
+  
+  
   print(df)
   return
 
