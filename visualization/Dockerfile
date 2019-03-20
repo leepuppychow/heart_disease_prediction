@@ -1,11 +1,11 @@
-FROM golang
+FROM python:3.6-slim
 
-ADD . /go/src/github.com/leepuppychow/heart_disease_prediction/visualization
-WORKDIR /go/src/github.com/leepuppychow/heart_disease_prediction/visualization
+WORKDIR /app
 
-RUN go get github.com/ajstarks/svgo
-RUN go install github.com/leepuppychow/heart_disease_prediction/visualization
+COPY . /app
 
-ENTRYPOINT /go/bin/visualization
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 EXPOSE 8888
+
+CMD ["python", "app.py"]
