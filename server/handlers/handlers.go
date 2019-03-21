@@ -51,10 +51,7 @@ func SaveNewDataPoint(row []string) {
 		RowsAdded++
 	}
 	if RowsAdded > 0 {
-		err = messages.Train(file)
-		if err == nil {
-			log.Println("Successful POST /train (prediction service)")
-		}
+		messages.UpdateCSV(file)
 	}
 }
 

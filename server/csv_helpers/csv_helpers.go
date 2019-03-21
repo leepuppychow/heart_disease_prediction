@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 )
 
-func OpenCSV(file string) io.Reader {
+func OpenCSV(file string) *os.File {
 	csvFile, err := os.Open(file)
 	if err != nil {
 		log.Println("Error opening CSV file", err)
