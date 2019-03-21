@@ -31,7 +31,7 @@ func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 			SlopeSTSegment:           r.FormValue("slope"),
 			NumberOfVesselsFlouro:    r.FormValue("ca"),
 			Thal:                     r.FormValue("thal"),
-			HasHeartDisease: r.FormValue("hasHeartDisease"),
+			HasHeartDisease:          r.FormValue("hasHeartDisease"),
 		}
 		row := p.DataRow()
 		if p.HasHeartDisease == "" {
