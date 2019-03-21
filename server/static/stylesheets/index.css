@@ -1,26 +1,36 @@
 #submit-button {
-  max-width: 200px;
+  position: absolute;
+  margin-top: 120px;
+  width: 200px;
   font-size: 16px;
 }
 
-.row-container {
+.row {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .column {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-flow: column wrap;
+}
+
+td {
+  width: 90px;
 }
 
 section {
   margin: 40px;
 }
 
-input, select {
-  width: 200px;
+input {
+  width: 100%;
+  font-size: 16px;
+}
+
+select {
+  width: 100px;
   margin: 8px;
   font-size: 16px;
 }
@@ -30,5 +40,22 @@ label {
 }
 
 h2 {
-  text-align: left;
+  text-align: center;
+}
+
+#data-entry {
+  margin: 8px;
+  z-index: 10;
+}
+
+#histograms {
+  margin: 8px;
+  width: 90vw;
+  height: auto;
+  z-index: 1;
+}
+
+img#histogram {
+  height: 100%;
+  width: 100%;
 }

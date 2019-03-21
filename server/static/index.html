@@ -6,50 +6,57 @@
 </head>
 <body>
 
-<div class="row-container">
-  
-  <section>
-    <h2>Load CSV file:</h2>
+<div class="row">
+  <section id="data-entry">
+    <!-- <h2>Load CSV file:</h2>
     <form class="column" action="/csv-load-form" method="post" enctype="multipart/form-data">
       <input id="csvFile" type="file" name="csvFile">
       <input type="submit" value="Upload File" />
-    </form>
+    </form> -->
     <h2>Enter patient data:</h2>
-    <form class="column" action="/patients" method="POST">
-      <input type="number" name="age" placeholder="Patient Age" required autocomplete="off">
-      <select name="sex" required>
-        <option value="" disabled selected>Gender</option>
-        <option value="1">Male</option>
-        <option value="0">Female</option>
-      </select>
-      <input type="number" name="cp" min=0 max=3 placeholder="Chest Pain Type (0-3)" required autocomplete="off">
-      <input type="number" name="trestbps" placeholder="Resting blood pressure" required autocomplete="off">
-      <input type="number" name="chol" placeholder="Serum cholesterol" required autocomplete="off">
-      
-      <label for="blood-sugar">Fasting blood sugar > 120 mg/dl?</label>
-      <select id="blood-sugar" name="fbs" required>
-        <option value="1">Yes</option>
-        <option value="0">No</option>
-      </select>
-      
-      <label for="blood-sugar">Exercise induced angina?</label>
-      <select id="blood-sugar" name="angina" required>
-        <option value="1">Yes</option>
-        <option value="0">No</option>
-      </select>
+    <form class="row" action="/patients" method="POST">
 
-      <label for="heart-disease">Has Heart Disease? (Leave as 'Unknown' to make a prediction)</label>
-      <select id="heart-disease" name="hasHeartDisease">
-        <option value="">Unknown</option>
-        <option value="1">Yes</option>
-        <option value="0">No</option>
-      </select>
+      <table>
+        <tr class="table-headers">
+          <td>Age</td>
+          <td>Sex</td>
+          <td>CP Type</td>
+          <td>Rest BP</td>
+          <td>Chol</td>
+          <td>Fasting BS</td>
+          <td>Rest ECG</td>
+          <td>Max HR</td>
+          <td>Exercise Angina</td>
+          <td>ST depression</td>
+          <td>ST slope</td>
+          <td># vessels</td>
+          <td>thal</td>
+          <td>Heart diease?</td>
+        </tr>
+        <tr>
+          <td><input type="number" name="age" required autocomplete="off"></td>
+          <td><input type="number" name="sex" min=0 max=1 required autocomplete="off"></td>
+          <td><input type="number" name="cp" min=0 max=3 required autocomplete="off"></td>
+          <td><input type="number" name="trestbps" required autocomplete="off"></td>
+          <td><input type="number" name="chol" required autocomplete="off"></td>
+          <td><input type="number" name="fbs" min=0 max=1 required autocomplete="off"></td>
+          <td><input type="number" name="restecg" min=0 max=2 required autocomplete="off"></td>
+          <td><input type="number" name="thalach" min=0 required autocomplete="off"></td>
+          <td><input type="number" name="exang" min=0 max=1 required autocomplete="off"></td>
+          <td><input type="number" name="oldpeak" min=0 required autocomplete="off"></td>
+          <td><input type="number" name="slope" min=0 max=2 required autocomplete="off"></td>
+          <td><input type="number" name="ca" min=0 max=3 required autocomplete="off"></td>
+          <td><input type="number" name="thal" min=0 max=7 required autocomplete="off"></td>
+          <td><input id="heart-disease" type="number" name="hasHeartDisease" min=0 max=1 autocomplete="off"></td>
+        </tr>
+      </table>
+      <h5>Note: leave heart disease blank to make prediction</h5>
       <input id="submit-button" type="submit" value="MAKE PREDICTION">
     </form>
   </section>
 
-  <section>
-    <img src="http://localhost:8888/histograms" alt="">
+  <section id="histograms">
+    <img id="histogram" src="http://localhost:8888/histograms" alt="">
   </section>
 </div>
 
