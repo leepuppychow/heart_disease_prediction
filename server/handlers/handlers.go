@@ -18,14 +18,20 @@ func IndexHandler() http.Handler {
 func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		p := models.HeartDiseasePatient{
-			Age:                   r.FormValue("age"),
-			Sex:                   r.FormValue("sex"),
-			ChestPainType:         r.FormValue("cp"),
-			RestingBloodPress:     r.FormValue("trestbps"),
-			SerumCholesterol:      r.FormValue("chol"),
-			FastingBP:             r.FormValue("fbs"),
-			ExerciseInducedAngina: r.FormValue("angina"),
-			HasHeartDisease:       r.FormValue("hasHeartDisease"),
+			Age:                      r.FormValue("age"),
+			Sex:                      r.FormValue("sex"),
+			ChestPainType:            r.FormValue("cp"),
+			RestingBloodPress:        r.FormValue("trestbps"),
+			SerumCholesterol:         r.FormValue("chol"),
+			FastingBP:                r.FormValue("fbs"),
+			RestECG:                  r.FormValue("restecg"),
+			MaxHR:                    r.FormValue("thalach"),
+			ExerciseInducedAngina:    r.FormValue("exang"),
+			STDepressionWithExercise: r.FormValue("oldpeak"),
+			SlopeSTSegment:           r.FormValue("slope"),
+			NumberOfVesselsFlouro:    r.FormValue("ca"),
+			Thal:                     r.FormValue("thal"),
+			HasHeartDisease: r.FormValue("hasHeartDisease"),
 		}
 		row := p.DataRow()
 		if p.HasHeartDisease == "" {
