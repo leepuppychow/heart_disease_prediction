@@ -1,9 +1,9 @@
 // DOM Elements
 const submitButton = document.querySelector('#submit-button');
-const heartDiseaseSelect = document.querySelector('select#heart-disease');
+const heartDiseaseSelect = document.querySelector('input#heart-disease');
 
 // Event Listeners
-heartDiseaseSelect.addEventListener('change', selectHeartDiseaseStatus);
+heartDiseaseSelect.addEventListener('input', selectHeartDiseaseStatus);
 
 // Event Handlers
 function selectHeartDiseaseStatus(event) {
