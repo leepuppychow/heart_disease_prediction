@@ -5,7 +5,7 @@ import pandas as pd
 def generate_histograms(data):
   df = pd.read_csv(data, sep=",")
   df.hist(bins=50, figsize=(20,15))
-  plt.savefig("./images/histograms.jpg", format="jpg")
+  plt.savefig("./images/histograms.png", format="png")
 
   # TODO: Maybe create separate histogram for each feature?
   # for column in df:
