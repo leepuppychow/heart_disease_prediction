@@ -56,6 +56,8 @@ func SaveNewDataPoint(row []string) {
 	if err == nil {
 		RowsAdded++
 	}
+
+	// TODO: change this eventually (either percentage of CSV file or set number of rows)
 	if RowsAdded > 0 {
 		messages.UpdateCSV(file)
 	}

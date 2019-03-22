@@ -17,12 +17,12 @@ def create_histograms():
 
 @app.route("/histograms", methods=['GET'])
 def all_histograms():
-  return send_from_directory("images", "histograms.jpg")
+  return send_from_directory("images", "histograms.png")
   
 
 @app.route("/histograms/<feature>", methods=['GET'])
 def show_histogram(feature):
-  return send_from_directory("images", "histogram-" + feature + ".jpg")
+  return send_from_directory("images", "histogram-" + feature + ".png")
 
 if __name__ == "__main__":
   app.run(host="0.0.0.0", port=8888)
