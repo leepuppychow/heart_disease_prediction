@@ -15,6 +15,7 @@ func UpdateCSV(filepath string) {
 		"http://visualization:8888/histograms",
 		// "http://statistics:8111/stats",
 	}
+	go backup.SaveToS3(filepath)
 	for _, url := range urls {
 		go func(url string) {
 			contents := c.OpenCSV(filepath)
@@ -26,10 +27,6 @@ func UpdateCSV(filepath string) {
 				log.Println("Error sending CSV", err)
 			}
 		}(url)
-	}
-	err := backup.SaveToS3(filepath)
-	if err == nil {
-		log.Println("Success saving file to S3")
 	}
 }
 
