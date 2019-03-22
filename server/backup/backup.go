@@ -10,17 +10,16 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws/awsutil"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 )
 
-const (
-	S3_REGION = "us-west-2"
-	S3_BUCKET = "heart-disease-prediction"
-)
+var S3_REGION = os.Getenv("S3_REGION")
+var S3_BUCKET = os.Getenv("S3_BUCKET")
+var accessKey = os.Getenv("AWS_ACCESS_KEY_ID")
+var secretAccess = os.Getenv("AWS_SECRET_ACCESS_KEY")
 
 func SaveToS3(filepath string) error {
 	creds, _ := getCredentials()
@@ -37,8 +36,6 @@ func SaveToS3(filepath string) error {
 }
 
 func getCredentials() (*credentials.Credentials, error) {
-	accessKey := os.Getenv("AWS_ACCESS_KEY_ID")
-	secretAccess := os.Getenv("AWS_SECRET_ACCESS_KEY")
 	token := ""
 	creds := credentials.NewStaticCredentials(accessKey, secretAccess, token)
 
