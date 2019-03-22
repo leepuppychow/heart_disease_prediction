@@ -5,6 +5,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
+	"strings"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws/awsutil"
 
@@ -59,7 +62,7 @@ func getFileParams(filepath string) *s3.PutObjectInput {
 
 	fileBytes := bytes.NewReader(buffer)
 	fileType := http.DetectContentType(buffer)
-	path := file.Name()
+	path := addTimeStamp(file.Name())
 
 	params := &s3.PutObjectInput{
 		Bucket:        aws.String(S3_BUCKET),
@@ -69,4 +72,9 @@ func getFileParams(filepath string) *s3.PutObjectInput {
 		ContentType:   aws.String(fileType),
 	}
 	return params
+}
+
+func addTimeStamp(filename string) string {
+	stamp := strconv.Itoa(int(time.Now().Unix())) + ".csv"
+	return strings.Replace(filename, ".csv", stamp, 1)
 }
