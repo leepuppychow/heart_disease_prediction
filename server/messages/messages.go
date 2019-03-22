@@ -5,10 +5,11 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/leepuppychow/heart_disease_prediction/server/backup"
 	c "github.com/leepuppychow/heart_disease_prediction/server/csv_helpers"
 )
 
-func UpdateCSV(file string) {
+func UpdateCSV(filepath string) {
 	urls := []string{
 		"http://prediction:8080/train",
 		"http://visualization:8888/histograms",
@@ -16,7 +17,7 @@ func UpdateCSV(file string) {
 	}
 	for _, url := range urls {
 		go func(url string) {
-			contents := c.OpenCSV(file)
+			contents := c.OpenCSV(filepath)
 			defer contents.Close()
 
 			client := &http.Client{}
@@ -25,6 +26,10 @@ func UpdateCSV(file string) {
 				log.Println("Error sending CSV", err)
 			}
 		}(url)
+	}
+	err := backup.SaveToS3(filepath)
+	if err == nil {
+		log.Println("Success saving file to S3")
 	}
 }
 
