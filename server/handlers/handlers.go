@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -44,10 +45,17 @@ func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func MakePrediction(row []string) {
-	err := messages.Predict(row)
+	resp, err := messages.Predict(row)
 	if err == nil {
 		log.Println("Successful POST /predict (prediction service)")
 	}
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println("Error reading Response body", err)
+	}
+	// TODO: get response into a struct and display in index.html
+	bodyString := string(bodyBytes)
+	log.Println(bodyString)
 }
 
 func SaveNewDataPoint(row []string) {
@@ -56,7 +64,6 @@ func SaveNewDataPoint(row []string) {
 	if err == nil {
 		RowsAdded++
 	}
-
 	// TODO: change this eventually (either percentage of CSV file or set number of rows)
 	if RowsAdded > 0 {
 		messages.UpdateCSV(file)
