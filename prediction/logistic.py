@@ -38,6 +38,8 @@ def train_model(data):
   }
   joblib.dump(data, "./models/heart_disease_logistic.pkl")
 
+  # TODO: Backup the pkl file in S3
+
   return {
     'model_type': 'Logistic Regression Classifier',
     'score': score,

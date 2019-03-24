@@ -30,12 +30,13 @@ func UpdateCSV(filepath string) {
 	}
 }
 
-func Predict(row []string) error {
+func Predict(row []string) (*http.Response, error) {
 	url := "http://prediction:8080/predict"
 	rowString := strings.Join(row, ",")
-	_, err := http.Post(url, "text/csv", strings.NewReader(rowString))
+	rowString = rowString[:len(rowString)-1] // remove last field from array (empty target value)
+	resp, err := http.Post(url, "text/csv", strings.NewReader(rowString))
 	if err != nil {
 		log.Println(err)
 	}
-	return err
+	return resp, err
 }
