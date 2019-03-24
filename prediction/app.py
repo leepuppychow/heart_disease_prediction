@@ -12,13 +12,13 @@ def convert_to_string(bytes_data):
 
 @app.route("/train", methods=['POST'])
 def train():
-  logistic.train_model(convert_to_string(request.data))
-  return "HELLO TRAIN HANDLER - PYTHON"
+  resp = logistic.train_model(convert_to_string(request.data))
+  return jsonify(resp), 200
 
 @app.route("/predict", methods=['POST'])
 def predict():
-  logistic.make_prediction(convert_to_string(request.data))
-  return "HELLO PREDICT HANDLER - PYTHON"
+  resp = logistic.make_prediction(convert_to_string(request.data))
+  return jsonify(resp), 200
 
 if __name__ == "__main__":
   app.run(host="0.0.0.0", port=8080)
