@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -12,8 +13,21 @@ import (
 
 var RowsAdded int
 
-func IndexHandler() http.Handler {
-	return http.FileServer(http.Dir("static"))
+type Page struct {
+	Title string
+	// Score      string
+	// Prediction string
+}
+
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	p := Page{
+		Title: "Heart Disease Prediction Index",
+	}
+	t, err := template.ParseFiles("./static/index.html")
+	if err != nil {
+		log.Println("Error parsing HTML file")
+	}
+	t.Execute(w, p)
 }
 
 func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
@@ -65,7 +79,7 @@ func SaveNewDataPoint(row []string) {
 		RowsAdded++
 	}
 	// TODO: change this eventually (either percentage of CSV file or set number of rows)
-	if RowsAdded > 0 {
+	if RowsAdded > 5 {
 		messages.UpdateCSV(file)
 	}
 }

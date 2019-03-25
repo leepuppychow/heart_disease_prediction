@@ -12,7 +12,8 @@ func main() {
 }
 
 func startServer(port string) {
-	http.Handle("/", h.IndexHandler())
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	http.HandleFunc("/", h.IndexHandler)
 	http.HandleFunc("/patients", h.NewPatientHandler)
 	http.HandleFunc("/csv-load-form", h.CSVLoadForm)
 	log.Println("Server running on port", port)
