@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -32,21 +33,10 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		p := models.HeartDiseasePatient{
-			Age:                      r.FormValue("age"),
-			Sex:                      r.FormValue("sex"),
-			ChestPainType:            r.FormValue("cp"),
-			RestingBloodPress:        r.FormValue("trestbps"),
-			SerumCholesterol:         r.FormValue("chol"),
-			FastingBP:                r.FormValue("fbs"),
-			RestECG:                  r.FormValue("restecg"),
-			MaxHR:                    r.FormValue("thalach"),
-			ExerciseInducedAngina:    r.FormValue("exang"),
-			STDepressionWithExercise: r.FormValue("oldpeak"),
-			SlopeSTSegment:           r.FormValue("slope"),
-			NumberOfVesselsFlouro:    r.FormValue("ca"),
-			Thal:                     r.FormValue("thal"),
-			HasHeartDisease:          r.FormValue("hasHeartDisease"),
+		var p models.HeartDiseasePatient
+		err := json.NewDecoder(r.Body).Decode(&p)
+		if err != nil {
+			log.Println("Error decoding request body into struct", err)
 		}
 		row := p.DataRow()
 		if p.HasHeartDisease == "" {
@@ -54,8 +44,8 @@ func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			SaveNewDataPoint(row)
 		}
+		http.Redirect(w, r, "/", http.StatusFound)
 	}
-	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 func MakePrediction(row []string) {

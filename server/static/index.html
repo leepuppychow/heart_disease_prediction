@@ -15,45 +15,43 @@
       <input type="submit" value="Upload File" />
     </form> -->
     <h2>Enter patient data:</h2>
-    <form class="row" action="/patients" method="POST">
-
-      <table>
-        <tr class="table-headers">
-          <td>Age</td>
-          <td>Sex</td>
-          <td>CP Type</td>
-          <td>Rest BP</td>
-          <td>Chol</td>
-          <td>Fasting BS</td>
-          <td>Rest ECG</td>
-          <td>Max HR</td>
-          <td>Exercise Angina</td>
-          <td>ST depression</td>
-          <td>ST slope</td>
-          <td># vessels</td>
-          <td>thal</td>
-          <td>Heart disease?</td>
-        </tr>
-        <tr>
-          <td><input type="number" name="age" required autocomplete="off"></td>
-          <td><input type="number" name="sex" min=0 max=1 required autocomplete="off"></td>
-          <td><input type="number" name="cp" min=0 max=3 required autocomplete="off"></td>
-          <td><input type="number" name="trestbps" min=0 required autocomplete="off"></td>
-          <td><input type="number" name="chol" required autocomplete="off"></td>
-          <td><input type="number" name="fbs" min=0 max=1 required autocomplete="off"></td>
-          <td><input type="number" name="restecg" min=0 max=2 required autocomplete="off"></td>
-          <td><input type="number" name="thalach" min=0 required autocomplete="off"></td>
-          <td><input type="number" name="exang" min=0 max=1 required autocomplete="off"></td>
-          <td><input type="number" name="oldpeak" min=0 required autocomplete="off"></td>
-          <td><input type="number" name="slope" min=0 max=2 required autocomplete="off"></td>
-          <td><input type="number" name="ca" min=0 max=3 required autocomplete="off"></td>
-          <td><input type="number" name="thal" min=0 max=7 required autocomplete="off"></td>
-          <td><input id="heart-disease" type="number" name="hasHeartDisease" min=0 max=1 autocomplete="off"></td>
-        </tr>
-      </table>
-      <br/>
-      <input id="submit-button" type="submit" value="MAKE PREDICTION">
-    </form>
+    <table>
+      <tr class="table-headers">
+        <td>Age</td>
+        <td>Sex</td>
+        <td>CP Type</td>
+        <td>Rest BP</td>
+        <td>Chol</td>
+        <td>Fasting BS</td>
+        <td>Rest ECG</td>
+        <td>Max HR</td>
+        <td>Exercise Angina</td>
+        <td>ST depression</td>
+        <td>ST slope</td>
+        <td># vessels</td>
+        <td>thal</td>
+        <td>Heart disease?</td>
+      </tr>
+      <tr>
+        <td><input type="number" name="age" required autocomplete="off"></td>
+        <td><input type="number" name="sex" min=0 max=1 required autocomplete="off"></td>
+        <td><input type="number" name="cp" min=0 max=3 required autocomplete="off"></td>
+        <td><input type="number" name="trestbps" min=0 required autocomplete="off"></td>
+        <td><input type="number" name="chol" required autocomplete="off"></td>
+        <td><input type="number" name="fbs" min=0 max=1 required autocomplete="off"></td>
+        <td><input type="number" name="restecg" min=0 max=2 required autocomplete="off"></td>
+        <td><input type="number" name="thalach" min=0 required autocomplete="off"></td>
+        <td><input type="number" name="exang" min=0 max=1 required autocomplete="off"></td>
+        <td><input type="number" name="oldpeak" min=0 required autocomplete="off"></td>
+        <td><input type="number" name="slope" min=0 max=2 required autocomplete="off"></td>
+        <td><input type="number" name="ca" min=0 max=3 required autocomplete="off"></td>
+        <td><input type="number" name="thal" min=0 max=7 required autocomplete="off"></td>
+        <td><input id="heart-disease" type="number" name="hasHeartDisease" min=0 max=1 autocomplete="off"></td>
+      </tr>
+    </table>
+    <div class="row">
+      <button onclick="sendData()" id="submit-button">MAKE PREDICTION</button>
+    </div>
     <h5>Note: leave heart disease blank to make prediction</h5>
   </section>
 
