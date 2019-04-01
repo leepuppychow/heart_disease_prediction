@@ -39,16 +39,17 @@ func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 			log.Println("Error decoding request body into struct", err)
 		}
 		row := p.DataRow()
+		prediction := ""
 		if p.HasHeartDisease == "" {
-			MakePrediction(row)
+			prediction = MakePrediction(row)
 		} else {
 			SaveNewDataPoint(row)
 		}
-		http.Redirect(w, r, "/", http.StatusFound)
+		w.Write([]byte(prediction))
 	}
 }
 
-func MakePrediction(row []string) {
+func MakePrediction(row []string) string {
 	resp, err := messages.Predict(row)
 	if err == nil {
 		log.Println("Successful POST /predict (prediction service)")
@@ -57,9 +58,9 @@ func MakePrediction(row []string) {
 	if err != nil {
 		log.Println("Error reading Response body", err)
 	}
-	// TODO: get response into a struct and display in index.html
 	bodyString := string(bodyBytes)
 	log.Println(bodyString)
+	return bodyString
 }
 
 func SaveNewDataPoint(row []string) {
