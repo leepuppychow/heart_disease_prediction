@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"encoding/json"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -12,39 +14,42 @@ import (
 
 var RowsAdded int
 
-func IndexHandler() http.Handler {
-	return http.FileServer(http.Dir("static"))
+type Page struct {
+	Title string
+	// Score      string
+	// Prediction string
+}
+
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	p := Page{
+		Title: "Heart Disease Prediction Index",
+	}
+	t, err := template.ParseFiles("./static/index.html")
+	if err != nil {
+		log.Println("Error parsing HTML file")
+	}
+	t.Execute(w, p)
 }
 
 func NewPatientHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		p := models.HeartDiseasePatient{
-			Age:                      r.FormValue("age"),
-			Sex:                      r.FormValue("sex"),
-			ChestPainType:            r.FormValue("cp"),
-			RestingBloodPress:        r.FormValue("trestbps"),
-			SerumCholesterol:         r.FormValue("chol"),
-			FastingBP:                r.FormValue("fbs"),
-			RestECG:                  r.FormValue("restecg"),
-			MaxHR:                    r.FormValue("thalach"),
-			ExerciseInducedAngina:    r.FormValue("exang"),
-			STDepressionWithExercise: r.FormValue("oldpeak"),
-			SlopeSTSegment:           r.FormValue("slope"),
-			NumberOfVesselsFlouro:    r.FormValue("ca"),
-			Thal:                     r.FormValue("thal"),
-			HasHeartDisease:          r.FormValue("hasHeartDisease"),
+		var p models.HeartDiseasePatient
+		err := json.NewDecoder(r.Body).Decode(&p)
+		if err != nil {
+			log.Println("Error decoding request body into struct", err)
 		}
 		row := p.DataRow()
+		prediction := ""
 		if p.HasHeartDisease == "" {
-			MakePrediction(row)
+			prediction = MakePrediction(row)
 		} else {
 			SaveNewDataPoint(row)
 		}
+		w.Write([]byte(prediction))
 	}
-	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-func MakePrediction(row []string) {
+func MakePrediction(row []string) string {
 	resp, err := messages.Predict(row)
 	if err == nil {
 		log.Println("Successful POST /predict (prediction service)")
@@ -53,9 +58,9 @@ func MakePrediction(row []string) {
 	if err != nil {
 		log.Println("Error reading Response body", err)
 	}
-	// TODO: get response into a struct and display in index.html
 	bodyString := string(bodyBytes)
 	log.Println(bodyString)
+	return bodyString
 }
 
 func SaveNewDataPoint(row []string) {
@@ -65,7 +70,7 @@ func SaveNewDataPoint(row []string) {
 		RowsAdded++
 	}
 	// TODO: change this eventually (either percentage of CSV file or set number of rows)
-	if RowsAdded > 0 {
+	if RowsAdded > 5 {
 		messages.UpdateCSV(file)
 	}
 }

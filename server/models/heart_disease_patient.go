@@ -2,20 +2,20 @@ package models
 
 // refer to NOTES.md for description of values:
 type HeartDiseasePatient struct {
-	Age                      string
-	Sex                      string
-	ChestPainType            string
-	RestingBloodPress        string
-	SerumCholesterol         string
-	FastingBP                string
-	RestECG                  string
-	MaxHR                    string
-	ExerciseInducedAngina    string
-	STDepressionWithExercise string
-	SlopeSTSegment           string
-	NumberOfVesselsFlouro    string
-	Thal                     string
-	HasHeartDisease          string
+	Age                      string `json:"age"`
+	Sex                      string `json:"sex"`
+	ChestPainType            string `json:"cp"`
+	RestingBloodPress        string `json:"trestbps"`
+	SerumCholesterol         string `json:"chol"`
+	FastingBP                string `json:"fbs"`
+	RestECG                  string `json:"restecg"`
+	MaxHR                    string `json:"thalach"`
+	ExerciseInducedAngina    string `json:"exang"`
+	STDepressionWithExercise string `json:"oldpeak"`
+	SlopeSTSegment           string `json:"slope"`
+	NumberOfVesselsFlouro    string `json:"ca"`
+	Thal                     string `json:"thal"`
+	HasHeartDisease          string `json:"hasHeartDisease"`
 }
 
 func (p *HeartDiseasePatient) DataRow() []string {
