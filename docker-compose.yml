@@ -16,3 +16,8 @@ services:
     build: "./visualization"
     ports:
       - "8888:8888"
+  
+  statistics:
+    build: "./statistics"
+    ports:
+      - "8111:8111"
