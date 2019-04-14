@@ -15,6 +15,7 @@ CORS(app)
 
 app.config.from_mapping(config)
 cache = Cache(app)
+cache.set("stats", "")
 
 def convert_to_string(bytes_data):
   s = str(bytes_data, 'utf-8')
@@ -22,13 +23,14 @@ def convert_to_string(bytes_data):
 
 @app.route("/stats", methods=['GET'])
 def get_current_stats():
-  return descriptive.get_stats(cache), 200
+  return cache.get("stats"), 200
 
 @app.route("/stats", methods=['POST'])
 def create_new_descriptive_stats():
   data = convert_to_string(request.data)
-  resp = descriptive.update_stats(data, cache)
-  return resp, 200
+  stats = descriptive.update_stats(data)
+  cache.set('stats', stats) 
+  return stats, 200
 
 if __name__ == "__main__":
   app.run(host="0.0.0.0", port=8111)
