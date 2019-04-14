@@ -13,7 +13,7 @@ func UpdateCSV(filepath string) {
 	urls := []string{
 		"http://prediction:8080/train",
 		"http://visualization:8888/histograms",
-		// "http://statistics:8111/stats",
+		"http://statistics:8111/stats",
 	}
 	go backup.SaveToS3(filepath)
 	for _, url := range urls {
