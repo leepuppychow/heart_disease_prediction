@@ -23,8 +23,6 @@ func UpdateCSV(filepath string) {
 
 			client := &http.Client{}
 			_, err := client.Post(url, "text/csv", contents)
-
-			// TODO: Get response from statistics endpoint and save that data to display in index.html
 			if err != nil {
 				log.Println("Error sending CSV", err)
 			}

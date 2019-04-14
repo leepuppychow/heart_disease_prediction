@@ -1,5 +1,6 @@
 Flask
 Flask-Cors
+Flask-Caching
 numpy
 pandas
 scikit-learn
